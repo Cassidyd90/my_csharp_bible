@@ -1,14 +1,14 @@
 ﻿using System;
-
+using System.Linq;
+using ToDoCommon;
 class Program
 {
     static void Main()
     {
 
-        void PrintSelectedOption(string selectedOption)
-        {
-            Console.WriteLine("Selected option: " + selectedOption);
-        }
+        Common myfuncions = new Common();
+
+        List<string> todolist = myfuncions.CreateNewList();
 
         string UserChoice;
 
@@ -27,19 +27,21 @@ class Program
             {
                 case "S":
                 case "s":
-                    PrintSelectedOption("See all TODOs");
+                    myfuncions.PrintSelectedOption("See all TODOs");
+                    myfuncions.ShowToDos(todolist);
                     break;
                 case "A":
                 case "a":
-                    PrintSelectedOption("Add a TODO");
+                    myfuncions.AddToDoItem(todolist);
                     break;
                 case "R":
                 case "r":
-                    PrintSelectedOption("Remove a TODO");
+                    myfuncions.PrintSelectedOption("Remove a TODO");
+                    myfuncions.RemoveTodo(todolist);
                     break;
                 case "E":
                 case "e":
-                    PrintSelectedOption("Exit");
+                    myfuncions.PrintSelectedOption("Exit");
                     break;
                 default:
                     Console.WriteLine("Invalid Option");

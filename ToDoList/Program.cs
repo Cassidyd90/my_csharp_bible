@@ -1,52 +1,151 @@
-﻿using System;
-using System.Linq;
-using ToDoCommon;
-class Program
+﻿
+
+namespace ToDoList
 {
-    static void Main()
+    class Program
     {
-
-        Common myfuncions = new Common();
-
-        List<string> todolist = myfuncions.CreateNewList();
-
-        string UserChoice;
-
-        do
+        static void Main()
         {
-            Console.WriteLine("Hello!");
-            Console.WriteLine("What do you want to do?");
-            Console.WriteLine("[S]ee all TODOs");
-            Console.WriteLine("[A]dd a TODO");
-            Console.WriteLine("[R]emove a TODO");
-            Console.WriteLine("[E]xit");
 
-            UserChoice = Console.ReadLine();
+            List<string> todolist = CreateNewList();
 
-            switch (UserChoice)
+            string UserChoice;
+
+            do
             {
-                case "S":
-                case "s":
-                    myfuncions.PrintSelectedOption("See all TODOs");
-                    myfuncions.ShowToDos(todolist);
-                    break;
-                case "A":
-                case "a":
-                    myfuncions.AddToDoItem(todolist);
-                    break;
-                case "R":
-                case "r":
-                    myfuncions.PrintSelectedOption("Remove a TODO");
-                    myfuncions.RemoveTodo(todolist);
-                    break;
-                case "E":
-                case "e":
-                    myfuncions.PrintSelectedOption("Exit");
-                    break;
-                default:
-                    Console.WriteLine("Invalid Option");
-                    break;
+                Console.WriteLine("Hello!");
+                Console.WriteLine("");
+                Console.WriteLine("What do you want to do?");
+                Console.WriteLine("[S]ee all TODOs");
+                Console.WriteLine("[A]dd a TODO");
+                Console.WriteLine("[R]emove a TODO");
+                Console.WriteLine("[E]xit");
+
+                UserChoice = GetUserInput();
+
+                switch (UserChoice)
+                {
+                    case "S":
+                    case "s":
+                        PrintSelectedOption("See all TODOs");
+                        ShowToDos(todolist);
+                        break;
+                    case "A":
+                    case "a":
+                        AddToDoItem(todolist);
+                        break;
+                    case "R":
+                    case "r":
+                        PrintSelectedOption("Remove a TODO");
+                        RemoveTodo(todolist);
+                        break;
+                    case "E":
+                    case "e":
+                        PrintSelectedOption("Exit");
+                        break;
+                    default:
+                        Console.WriteLine("Invalid Option");
+                        break;
+                }
+            } while (UserChoice != "E" && UserChoice != "e");
+        }
+
+        static void PrintSelectedOption(string selectedOption)
+        {
+            Console.WriteLine("Selected option: " + selectedOption);
+        }
+
+
+        public static List<string> CreateNewList()
+        {
+            return new List<string>();
+        }
+
+        static void AddToDoItem(List<string> myList)
+        {
+            PrintSelectedOption("Add a Todo");
+            string newTodo = null;
+            while (string.IsNullOrEmpty(newTodo) || myList.Contains(newTodo))
+            {
+                Console.WriteLine("Enter a Todo");
+                newTodo = Console.ReadLine();
+                if (string.IsNullOrEmpty(newTodo))
+                {
+                    Console.WriteLine("That was empty, enter a Todo!");
+                }
+
+                else if (myList.Contains(newTodo))
+                {
+                    Console.WriteLine("Already exists.");
+                }
             }
-        } while (UserChoice != "E" && UserChoice != "e");
+            myList.Add(newTodo);
+        }
+
+        static void ShowToDos(List<string> myList)
+        {
+            foreach (var todo in myList.Select((value, index) => new { value, index }))
+            {
+                Console.WriteLine($"{todo.index}: {todo.value}");
+            }
+
+        }
+
+        static void RemoveTodo(List<string> myList)
+        {
+            Console.WriteLine("Remove by writing index number.");
+            ShowToDos(myList);
+
+            int removeVar = -1;
+            while (removeVar < 0 || removeVar >= myList.Count)
+            {
+                Console.WriteLine("Remove by writing index number.");
+                bool parse = int.TryParse(Console.ReadLine(), out removeVar);
+
+                if (parse == false)
+                {
+                    Console.WriteLine("That's not a number.");
+                }
+                else if (removeVar < 0 || removeVar >= myList.Count)
+                {
+                    Console.WriteLine("Out of range.");
+                }
+            }
+            myList.RemoveAt(removeVar);
+            Console.WriteLine("Item removed successfully.");
+            ShowToDos(myList);
+
+        }
+
+        static string GetUserInput()
+        {
+            string userInput = "";
+            while (string.IsNullOrEmpty(userInput))
+            {
+                Console.WriteLine("Enter a ToDo");
+                userInput = Console.ReadLine();
+                if (string.IsNullOrEmpty(userInput))
+                {
+                    Console.WriteLine("Enter something");
+
+                }
+            }
+            return userInput;
+
+
+        }
+
     }
+
+
 }
+
+
+
+
+
+
+
+
+
+

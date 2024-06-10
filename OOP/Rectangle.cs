@@ -5,9 +5,10 @@
     ///
     public class Rectangle
     {
+        const int NumberOfSides = 4;
         // Public fields start with capital
-        public int Width;
-        public int Height;
+        public readonly int Width;
+        public readonly int Height;
 
         /// Private fields start with underscore and lower letter 
         // private int _width;
@@ -18,18 +19,30 @@
         // Won't have 'return' like other methods
         public Rectangle(int width, int height)
         {
-            Width = width;
-            Height = height;
+            
+            Width = GetLengthOrDefault(width, nameof(Width));
+            Height = GetLengthOrDefault(height, nameof(Height));
+        }
+            
+
+        private int GetLengthOrDefault(int length, string name)
+        {
+            // const because it will never change
+            const int DefaultWidthHeight = 1;
+            if (length <= 0)
+            {
+                Console.WriteLine($"{name} must be positive number.");
+                return DefaultWidthHeight;
+            }
+            return length;
+
         }
 
-        public int CalculateCircumference()
-        {
-            return 2 * Width + 2 * Height;
-        }
+        // Expression Body method
+        // One return works, more than one return doesn't work
+        public int CalculateCircumference() => 2 * Width + 2 * Height;
 
-        public int CalculateArea()
-        {
-            return Width * Height;
-        }
+
+        public int CalculateArea() => Width * Height;
     }
 }
